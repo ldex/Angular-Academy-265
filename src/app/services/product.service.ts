@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, delay, shareReplay, tap, map } from 'rxjs/operators';
+import { catchError, delay, shareReplay, tap, map, find } from 'rxjs/operators';
 import { Product } from '../products/product.interface';
 
 
@@ -15,6 +15,14 @@ export class ProductService {
 
   constructor(private http: HttpClient) {
     this.initProducts();
+  }
+
+  getProductById(id: number): Observable<Product> {
+    return this
+            .products$
+            .pipe(
+              map(products => products.find(product => product.id == id))
+            );
   }
 
   initProducts() {
